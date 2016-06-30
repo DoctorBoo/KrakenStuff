@@ -1,0 +1,9 @@
+﻿extends layout
+
+block content
+	- var _ticks = ticks
+	- var header = ["name", "creation"] 
+		ul
+			each tick in _ticks
+				li
+					span=tick.name

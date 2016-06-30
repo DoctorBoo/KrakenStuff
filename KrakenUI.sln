@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "KrakenUI", "KrakenUI\KrakenUI.njsproj", "{FA421D58-B442-4BCB-93D8-A5F20D57957A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA421D58-B442-4BCB-93D8-A5F20D57957A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA421D58-B442-4BCB-93D8-A5F20D57957A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA421D58-B442-4BCB-93D8-A5F20D57957A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA421D58-B442-4BCB-93D8-A5F20D57957A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
