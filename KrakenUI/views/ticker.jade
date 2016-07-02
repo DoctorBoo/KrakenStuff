@@ -2,8 +2,23 @@
 
 block content
 	- var _ticks = ticks
-	- var header = ["name", "creation"] 
-		ul
-			each tick in _ticks
-				li
-					span=tick.name
+	- var headers = ["name", "pair", "creation"] 
+
+
+		table.table.table-hover.table-bordered
+			thead
+			tr
+			each header in headers
+				th
+					span= header
+			tbody
+			if _ticks.length
+				each tick in _ticks
+					tr
+					td
+						span= tick.name
+					td
+						span= tick.pair.c	
+					td
+						span= tick.creation
+

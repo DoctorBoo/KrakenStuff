@@ -28,17 +28,20 @@ var MytickerService = (function () {
                             throw err;
                         var max = 10;
                         var anyList;
-                        var any = db.collection('kraken').find({}).limit(max).toArray(function (err, docs) {
-                            console.dir(docs);
-                            for (var i = 0; i < max; i++) {
-                                var result = docs[i];
-                                var tick = { id: i, name: result.name, pair: result.pair, creation: new Date(result.Creation.$date) };
-                                collection.push(tick);
-                            }
-                            db.close();
-                            observer.next(collection);
-                            observer.complete();
-                            finished = true;
+                        db.collection('kraken').count(function (q, c) {
+                            var any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
+                                .skip(c).toArray(function (err, docs) {
+                                console.dir(docs);
+                                for (var i = 0; i < docs.length; i++) {
+                                    var result = docs[i];
+                                    var tick = { id: i, name: result.name, pair: result.pair, creation: result.Creation };
+                                    collection.push(tick);
+                                }
+                                db.close();
+                                observer.next(collection);
+                                observer.complete();
+                                finished = true;
+                            });
                         });
                     });
                 }

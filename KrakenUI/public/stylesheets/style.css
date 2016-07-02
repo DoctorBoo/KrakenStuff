@@ -7,6 +7,14 @@ body {
   padding-left: 15px;
   padding-right: 15px;
 }
+.creation {
+  position: relative;
+  left: 10px;
+}
+.pair {
+  position: relative;
+  left: 10px;
+}
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,

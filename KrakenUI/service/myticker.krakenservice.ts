@@ -21,18 +21,22 @@ export class MytickerService {
 
                         let max: number = 10;
                         var anyList: any[];
-                        var any: any = db.collection('kraken').find({}).limit(max).toArray(function (err, docs) {
-                            console.dir(docs);
-                            for (let i: number = 0; i < max; i++) {
-                                let result: any = docs[i];
-                                let tick: Tick = { id: i, name: result.name, pair: result.pair, creation: new Date(result.Creation.$date) };
-                                collection.push(tick);
-                            }
-                            db.close();
-                            observer.next(collection);
-                            observer.complete();
-                            finished = true;
+                        db.collection('kraken').count((q, c) => {
+                            var any: any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
+                                .skip(c).toArray(function (err, docs) {
+                                    console.dir(docs);
+                                    for (let i: number = 0; i < docs.length; i++) {
+                                        let result: any = docs[i];
+                                        let tick: Tick = { id: i, name: result.name, pair: result.pair, creation: result.Creation };
+                                        collection.push(tick);
+                                    }
+                                    db.close();
+                                    observer.next(collection);
+                                    observer.complete();
+                                    finished = true;
+                                });
                         });
+                        
                     });
                 }
                 catch (e) {
