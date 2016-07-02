@@ -15,7 +15,7 @@ export class MytickerService {
         var fn = function (observer, bsy) {
             if (!bsy) {
                 try {
-                    MongoClient.connect('mongodb://192.168.178.21:27017/test', function (err: any, db: any) {
+                    MongoClient.connect('mongodb://192.168.178.21:27017/test', (err, db) => {
                         busy = true;
                         if (err) throw err;
 
