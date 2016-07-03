@@ -14,12 +14,26 @@ var MongoClient = require('mongodb').MongoClient;
 var KrakenClient = require('kraken-api');
 var MytickerService = (function () {
     function MytickerService() {
+        this.intervalIds = [];
     }
+    MytickerService.prototype.setInterval = function (fn, ms) {
+        var self = this;
+        if (!self.intervalIds.length) {
+            var intervalId = setInterval(fn, ms);
+            self.intervalIds.push(intervalId);
+        }
+    };
+    MytickerService.prototype.clearInterval = function () {
+        var self = this;
+        if (self.intervalIds.length)
+            clearInterval(self.intervalIds.pop());
+    };
     MytickerService.prototype.getAllTicks = function () {
         var finished = false;
         var busy = false;
         var collection = [];
-        var fn = function (observer, bsy) {
+        console.log('polling...');
+        var fn_ticker = function (observer, bsy) {
             if (!bsy) {
                 try {
                     MongoClient.connect('mongodb://192.168.178.21:27017/test', function (err, db) {
@@ -32,6 +46,7 @@ var MytickerService = (function () {
                             var any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
                                 .skip(c).toArray(function (err, docs) {
                                 console.dir(docs);
+                                //Create business object tick
                                 for (var i = 0; i < docs.length; i++) {
                                     var result = docs[i];
                                     var tick = { id: i, name: result.name, pair: result.pair, creation: result.Creation };
@@ -51,11 +66,15 @@ var MytickerService = (function () {
                 }
                 ;
             }
+            else {
+                console.log('busy retrieving...');
+            }
+            ;
         };
         var source = Observable_1.Observable.create(function (observer) {
             var id = setTimeout(function () {
-                fn(observer, busy);
-            }, 500);
+                fn_ticker(observer, busy);
+            }, 5);
             console.log('started');
             return function () {
                 console.log('disposal called');

@@ -34,10 +34,10 @@ app.get('/contact', routes.contact);
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
-https.createServer(options, function (req, res) {
+https.createServer(options, app, function (req, res) {
     res.writeHead(200, {
         'Content-Type': 'application/json',
     });
     res.end();
-}).listen(8089);
+}).listen(443);
 //# sourceMappingURL=app.js.map

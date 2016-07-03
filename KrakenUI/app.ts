@@ -10,6 +10,8 @@ const fs = require('fs');
 const options = {
     key: fs.readFileSync('routes/key.pem','utf8'),
     cert: fs.readFileSync('routes/key-cert.pem', 'utf8')
+    //cert: fs.readFileSync('routes/my-cert.cer'),
+    //passphrase: 'Volkswagen01'
 };
 // all environments
 app.set('port', process.env.PORT || 8088);
@@ -38,9 +40,9 @@ app.get('/contact', routes.contact);
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
-https.createServer(options, (req, res) => {
+https.createServer(options, app, (req, res) => {
     res.writeHead(200, {
         'Content-Type': 'application/json',
     });
     res.end();
-}).listen(8089);
+}).listen(443);

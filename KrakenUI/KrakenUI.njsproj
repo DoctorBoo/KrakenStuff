@@ -71,8 +71,10 @@
     <Content Include="public\stylesheets\style.css" />
     <Content Include="public\stylesheets\style.styl" />
     <Content Include="README.md" />
+    <Content Include="routes\my-cert.cer" />
     <Content Include="routes\key-cert.pem" />
     <Content Include="routes\key.pem" />
+    <Content Include="routes\startcom.p12" />
     <Content Include="tsconfig.json" />
     <Content Include="typings.json" />
     <Content Include="typings\globals\core-js\typings.json" />
