@@ -33,7 +33,9 @@ export class MytickerService {
         let fn_ticker = (observer, bsy) => {
             if (!bsy) {
                 try {
-                    MongoClient.connect('mongodb://192.168.178.21:27017/test', (err, db) => {
+                    MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
+                        let ethPairList: any[] = [];
+                        let daoPairList: any[] = [];
                         busy = true;
                         if (err) throw err;
 
@@ -41,7 +43,7 @@ export class MytickerService {
                         var anyList: any[];
                         db.collection('kraken').count((q, c) => {
                             var any: any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
-                                .skip(c - 6000).toArray(function (err, docs) {
+                                .skip(c - 12000).toArray(function (err, docs) {
                                     console.dir(docs);
 
                                     //Create business object tick
@@ -55,9 +57,22 @@ export class MytickerService {
                                             hour12: false
                                         };
                                         let localDate: string = result.Creation.toLocaleString('nl-NL', options);
+                                        let ethListLen: number = ethPairList.length;
+                                        let daoListLen: number = daoPairList.length;
                                         tick.creationAsString = localDate;
-                                        tick.bbDataEth = atick.name === 'XETHZEUR' ? [atick.creation, atick.pair['c'][0]] : null;
-                                        tick.bbDataDAO = atick.name === 'XDAOZEUR' ? [atick.creation, atick.pair['c'][0]] : null;
+                                        let existsEth: boolean = ethPairList.length > 0 &&
+                                            (ethPairList && ethPairList[ethListLen - 1] && ethPairList[ethListLen - 1].creation !== atick.creation && 
+                                            ethPairList[ethListLen - 1].pair["c"][0] == atick.pair['c'][0]);
+                                        let existsDao: boolean = daoPairList.length > 0 &&                                            
+                                                (daoPairList && daoPairList[daoListLen - 1] && daoPairList[daoListLen - 1].creation !== atick.creation &&
+                                                    daoPairList[daoListLen - 1].pair["c"][0] == atick.pair['c'][0]);
+
+                                        tick.bbDataEth = atick.name === 'XETHZEUR' && !existsEth ? [atick.creation, atick.pair['c'][0]] : null;
+                                        tick.bbDataDAO = atick.name === 'XDAOZEUR' && !existsDao ? [atick.creation, atick.pair['c'][0]] : null;
+
+                                        if (atick.name === 'XETHZEUR') ethPairList.push(tick);//collect all
+                                        if (atick.name === 'XDAOZEUR') daoPairList.push(tick);//collect all
+
                                         collection.push(tick);
                                     }
                                     db.close();

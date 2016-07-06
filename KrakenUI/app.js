@@ -12,7 +12,7 @@ var options = {
     cert: fs.readFileSync('routes/key-cert.pem', 'utf8')
 };
 // all environments
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || 8082);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());

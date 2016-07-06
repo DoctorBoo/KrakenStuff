@@ -1,14 +1,14 @@
 ﻿/*
  * GET home page.
  */
-import express = require('express');
+var express = require('express');
 import 'reflect-metadata';
 
 import { Tick } from '../app/mytick.component'
 import { MYTickerComponent } from '../app/myTicker.component'
 import { MytickerService } from '../service/myticker.krakenservice'
 
-export function index(req: express.Request, res: express.Response) {
+export function index(req: any, res: any) {
     let service: MytickerService = new MytickerService();
     let component: MYTickerComponent = new MYTickerComponent(service);
     let list: Tick[];

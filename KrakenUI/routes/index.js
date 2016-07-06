@@ -1,4 +1,8 @@
 "use strict";
+/*
+ * GET home page.
+ */
+var express = require('express');
 require('reflect-metadata');
 var myTicker_component_1 = require('../app/myTicker.component');
 var myticker_krakenservice_1 = require('../service/myticker.krakenservice');
