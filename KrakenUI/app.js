@@ -12,7 +12,7 @@ var options = {
     cert: fs.readFileSync('routes/key-cert.pem', 'utf8')
 };
 // all environments
-app.set('port', process.env.PORT || 8088);
+app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -29,8 +29,6 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 app.get('/', routes.index);
-app.get('/about', routes.about);
-app.get('/contact', routes.contact);
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
@@ -39,5 +37,5 @@ https.createServer(options, app, function (req, res) {
         'Content-Type': 'application/json',
     });
     res.end();
-}).listen(443);
+}).listen(44303);
 //# sourceMappingURL=app.js.map

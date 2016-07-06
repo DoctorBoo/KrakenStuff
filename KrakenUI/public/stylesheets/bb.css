@@ -1,0 +1,27 @@
+﻿body {
+  font: 12px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #999;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
+.line.bands {
+  stroke: #6c949f;
+  stroke-opacity: 0.6;
+}
+
+.area.bands {
+  fill: #6c949f;
+  fill-opacity: 0.3;
+  stroke: none;
+}

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var Observable_1 = require('rxjs/Observable');
 var core_1 = require('@angular/core');
+var myLogger_service_1 = require('../service/myLogger.service');
 var MongoClient = require('mongodb').MongoClient;
 var KrakenClient = require('kraken-api');
 var MytickerService = (function () {
@@ -44,12 +45,22 @@ var MytickerService = (function () {
                         var anyList;
                         db.collection('kraken').count(function (q, c) {
                             var any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
-                                .skip(c).toArray(function (err, docs) {
+                                .skip(c - 6000).toArray(function (err, docs) {
                                 console.dir(docs);
                                 //Create business object tick
                                 for (var i = 0; i < docs.length; i++) {
                                     var result = docs[i];
-                                    var tick = { id: i, name: result.name, pair: result.pair, creation: result.Creation };
+                                    var atick = { id: i, name: result.name, pair: result.pair, creation: result.Creation };
+                                    var tick = atick;
+                                    var options = {
+                                        year: 'numeric', month: 'numeric', day: 'numeric',
+                                        hour: 'numeric', minute: 'numeric', second: 'numeric',
+                                        hour12: false
+                                    };
+                                    var localDate = result.Creation.toLocaleString('nl-NL', options);
+                                    tick.creationAsString = localDate;
+                                    tick.bbDataEth = atick.name === 'XETHZEUR' ? [atick.creation, atick.pair['c'][0]] : null;
+                                    tick.bbDataDAO = atick.name === 'XDAOZEUR' ? [atick.creation, atick.pair['c'][0]] : null;
                                     collection.push(tick);
                                 }
                                 db.close();
@@ -62,6 +73,7 @@ var MytickerService = (function () {
                 }
                 catch (e) {
                     finished = true;
+                    myLogger_service_1.MYLoggerService.logException(e);
                     observer.onError(e);
                 }
                 ;

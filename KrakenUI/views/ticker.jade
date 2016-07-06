@@ -1,10 +1,26 @@
 ﻿extends layout
 
 block content
-	- var _ticks = ticks
-	- var headers = ["name", "pair", "creation"] 
-
-
+	script(src='/javascripts/jquery-1.10.2.js')
+	script(src='http://d3js.org/d3.v3.js')
+	script(src='/javascripts/bb.js')
+	- var _ticks = ticks;
+	- var ethTicks = [], daoTicks = [];
+	- var headers = ["name", "pair", "creation"] ;
+	- var etheur = [];
+	- var daoeur = [];
+	- _ticks.forEach(function(t) {
+	-	if(t.bbDataEth){
+	-		etheur.push(t.bbDataEth);
+	-		ethTicks.push(t);
+	-	}
+	-	if(t.bbDataDAO){
+	-		daoeur.push(t.bbDataDAO);
+	-		daoTicks.push(t);
+	-	}
+	- })
+	div#bb(data-bb=etheur)
+	div
 		table.table.table-hover.table-bordered
 			thead
 			tr
@@ -13,12 +29,11 @@ block content
 					span= header
 			tbody
 			if _ticks.length
-				each tick in _ticks
+				each tick in ethTicks
 					tr
 					td
 						span= tick.name
 					td
 						span= tick.pair.c	
 					td
-						span= tick.creation
-
+						span= tick.creationAsString

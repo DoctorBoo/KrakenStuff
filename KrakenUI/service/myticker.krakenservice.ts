@@ -1,7 +1,8 @@
 
 import { Observable } from 'rxjs/Observable';
 import {Injectable} from '@angular/core';
-import {Tick} from '../app/myTick.component'
+import {Tick} from '../app/myTick.component';
+import {MYLoggerService} from '../service/myLogger.service';
 var MongoClient = require('mongodb').MongoClient;
 var KrakenClient = require('kraken-api');
 
@@ -25,7 +26,8 @@ export class MytickerService {
     getAllTicks(): Observable<Tick[]>{
         let finished: boolean = false;
         let busy: boolean = false;
-        let collection: Tick[] = [];
+        let collection: any[] = [];
+        
         console.log('polling...');
 
         let fn_ticker = (observer, bsy) => {
@@ -39,13 +41,23 @@ export class MytickerService {
                         var anyList: any[];
                         db.collection('kraken').count((q, c) => {
                             var any: any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
-                                .skip(c).toArray(function (err, docs) {
+                                .skip(c - 6000).toArray(function (err, docs) {
                                     console.dir(docs);
 
                                     //Create business object tick
                                     for (let i: number = 0; i < docs.length; i++) {
                                         let result: any = docs[i];
-                                        let tick: Tick = { id: i, name: result.name, pair: result.pair, creation: result.Creation };
+                                        let atick: Tick = { id: i, name: result.name, pair: result.pair, creation: result.Creation };
+                                        let tick: any = atick;
+                                        var options = {
+                                            year: 'numeric', month: 'numeric', day: 'numeric',
+                                            hour: 'numeric', minute: 'numeric', second: 'numeric',
+                                            hour12: false
+                                        };
+                                        let localDate: string = result.Creation.toLocaleString('nl-NL', options);
+                                        tick.creationAsString = localDate;
+                                        tick.bbDataEth = atick.name === 'XETHZEUR' ? [atick.creation, atick.pair['c'][0]] : null;
+                                        tick.bbDataDAO = atick.name === 'XDAOZEUR' ? [atick.creation, atick.pair['c'][0]] : null;
                                         collection.push(tick);
                                     }
                                     db.close();
@@ -59,6 +71,7 @@ export class MytickerService {
                 }
                 catch (e) {
                     finished = true;
+                    MYLoggerService.logException(e);
                     observer.onError(e);
                 };
             } else {
