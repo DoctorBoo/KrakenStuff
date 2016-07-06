@@ -17,8 +17,8 @@
             d.close = parseFloat(d[1]);
         })
 
-        var n = Math.round( data.length / 20); // n-period of moving average
-        var k = Math.round( n / 5); // k times n-period standard deviation above/below moving average
+        var n = Math.round(data.length * 0.106667); // n-period of moving average
+        var k = Math.round(2); // k times n-period standard deviation above/below moving average
 
         var parseDate = d3.time.format("%m/%d/%Y").parse;
 

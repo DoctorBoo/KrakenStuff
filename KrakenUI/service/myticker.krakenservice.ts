@@ -43,7 +43,7 @@ export class MytickerService {
                         var anyList: any[];
                         db.collection('kraken').count((q, c) => {
                             var any: any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
-                                .skip(c - 12000).toArray(function (err, docs) {
+                                .skip(c - 4000).toArray(function (err, docs) {
                                     console.dir(docs);
 
                                     //Create business object tick
@@ -62,10 +62,12 @@ export class MytickerService {
                                         tick.creationAsString = localDate;
                                         let existsEth: boolean = ethPairList.length > 0 &&
                                             (ethPairList && ethPairList[ethListLen - 1] && ethPairList[ethListLen - 1].creation !== atick.creation && 
-                                            ethPairList[ethListLen - 1].pair["c"][0] == atick.pair['c'][0]);
+                                            ethPairList[ethListLen - 1].pair["c"][0] == atick.pair['c'][0] &&
+                                            ethPairList[ethListLen - 1].pair["c"][1] == atick.pair['c'][1]);
                                         let existsDao: boolean = daoPairList.length > 0 &&                                            
                                                 (daoPairList && daoPairList[daoListLen - 1] && daoPairList[daoListLen - 1].creation !== atick.creation &&
-                                                    daoPairList[daoListLen - 1].pair["c"][0] == atick.pair['c'][0]);
+                                                daoPairList[daoListLen - 1].pair["c"][0] == atick.pair['c'][0] &&
+                                                daoPairList[daoListLen - 1].pair["c"][1] == atick.pair['c'][1]);
 
                                         tick.bbDataEth = atick.name === 'XETHZEUR' && !existsEth ? [atick.creation, atick.pair['c'][0]] : null;
                                         tick.bbDataDAO = atick.name === 'XDAOZEUR' && !existsDao ? [atick.creation, atick.pair['c'][0]] : null;
