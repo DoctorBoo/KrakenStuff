@@ -86,6 +86,7 @@
     <Content Include="views\about.jade" />
     <Content Include="views\index.jade" />
     <Content Include="views\layout.jade" />
+    <Content Include="views\bb.jade" />
     <Content Include="views\ticker.html" />
     <Content Include="views\ticker.jade" />
   </ItemGroup>

@@ -5,6 +5,7 @@ block content
 	script(src='http://d3js.org/d3.v3.js')
 	script(src='/javascripts/bb.js')
 	- var _ticks = ticks;
+	- var _bbParams = bbParams;
 	- var ethTicks = [], daoTicks = [];
 	- var headers = ["name", "pair", "creation"] ;
 	- var etheur = [];
@@ -12,15 +13,14 @@ block content
 	- _ticks.forEach(function(t) {
 	-	if(t.bbDataEth){
 	-		etheur.push(t.bbDataEth);
-	-		ethTicks.unshift(t);
+	-		ethTicks.push(t);
 	-	}
 	-	if(t.bbDataDAO){
 	-		daoeur.push(t.bbDataDAO);
-	-		daoTicks.unshift(t);
+	-		daoTicks.push(t);
 	-	}
 	- })
-	div#bb(data-bb=etheur)
-	div
+	-	ethTicks=[ethTicks.pop()];
 		table.table.table-hover.table-bordered
 			thead
 			tr
@@ -37,3 +37,6 @@ block content
 						span= tick.pair.c	
 					td
 						span= tick.creationAsString
+
+	div#bb(data-bb=etheur)
+	div#bbParams(data-bbParams=bbParams)

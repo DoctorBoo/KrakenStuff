@@ -23,7 +23,7 @@ export class MytickerService {
             clearInterval(self.intervalIds.pop());
     }
 
-    getAllTicks(): Observable<Tick[]>{
+    getAllTicks(tickCount?:number): Observable<Tick[]>{
         let finished: boolean = false;
         let busy: boolean = false;
         let collection: any[] = [];
@@ -41,9 +41,10 @@ export class MytickerService {
 
                         let max: number = 10;
                         var anyList: any[];
+                        tickCount = tickCount ? tickCount : 20000;
                         db.collection('kraken').count((q, c) => {
                             var any: any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
-                                .skip(c - 12000).toArray(function (err, docs) {
+                                .skip(c - tickCount).toArray(function (err, docs) {
                                     console.dir(docs);
 
                                     //Create business object tick

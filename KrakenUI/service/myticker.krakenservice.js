@@ -29,7 +29,7 @@ var MytickerService = (function () {
         if (self.intervalIds.length)
             clearInterval(self.intervalIds.pop());
     };
-    MytickerService.prototype.getAllTicks = function () {
+    MytickerService.prototype.getAllTicks = function (tickCount) {
         var finished = false;
         var busy = false;
         var collection = [];
@@ -45,9 +45,10 @@ var MytickerService = (function () {
                             throw err;
                         var max = 10;
                         var anyList;
+                        tickCount = tickCount ? tickCount : 20000;
                         db.collection('kraken').count(function (q, c) {
                             var any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
-                                .skip(c - 12000).toArray(function (err, docs) {
+                                .skip(c - tickCount).toArray(function (err, docs) {
                                 console.dir(docs);
                                 //Create business object tick
                                 for (var i = 0; i < docs.length; i++) {

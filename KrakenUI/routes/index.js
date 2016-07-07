@@ -1,8 +1,4 @@
 "use strict";
-/*
- * GET home page.
- */
-var express = require('express');
 require('reflect-metadata');
 var myTicker_component_1 = require('../app/myTicker.component');
 var myticker_krakenservice_1 = require('../service/myticker.krakenservice');
@@ -10,7 +6,7 @@ function index(req, res) {
     var service = new myticker_krakenservice_1.MytickerService();
     var component = new myTicker_component_1.MYTickerComponent(service);
     var list;
-    var subscription = component.getAllTicks().subscribe(function (l) {
+    var subscription = component.getAllTicks(20000).subscribe(function (l) {
         console.log('view next...');
         list = l;
         res.render('ticker', { title: 'Express', year: new Date().getFullYear(), ticks: list });
@@ -21,5 +17,27 @@ function index(req, res) {
     });
 }
 exports.index = index;
+;
+function bb(req, res) {
+    var ticks = req.query.ticks;
+    var service = new myticker_krakenservice_1.MytickerService();
+    var component = new myTicker_component_1.MYTickerComponent(service, ticks);
+    var list;
+    var subscription = component.getAllTicks(ticks).subscribe(function (l) {
+        console.log('view next...');
+        list = l;
+        res.render('bb', {
+            title: 'Express', year: new Date().getFullYear(), ticks: list, bbParams: {
+                n: req.query.n,
+                k: req.query.k
+            }
+        });
+    }, function (e) {
+        console.log(e);
+    }, function () {
+        console.log('done');
+    });
+}
+exports.bb = bb;
 ;
 //# sourceMappingURL=index.js.map

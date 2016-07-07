@@ -17,8 +17,9 @@
             d.close = parseFloat(d[1]);
         })
 
-        var n = Math.round(data.length * 0.2066667); // n-period of moving average
-        var k = Math.round(2); // k times n-period standard deviation above/below moving average
+        var bbParams = $('#bbParams').data();
+        var n = bbParams && Number($('#bbParams').data().bbparams.n) > 0 ? $('#bbParams').data().bbparams.n : Math.round(35); // n-period of moving average
+        var k = bbParams && Number($('#bbParams').data().bbparams.k) > 0? $('#bbParams').data().bbparams.k : Math.round(2); // k times n-period standard deviation above/below moving average
 
         var parseDate = d3.time.format("%m/%d/%Y").parse;
 

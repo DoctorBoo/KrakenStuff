@@ -13,15 +13,18 @@ import {Tick} from './myTick.component'
 
 export class MYTickerComponent implements OnInit {
     public Ticks: Tick[];
-    constructor(private service: MytickerService) {       
+    _tickCount: number;
+
+    constructor(private service: MytickerService, tickCount?: number) {
+        this._tickCount = tickCount;  
     }
 
-    public getAllTicks(): Observable<Tick[]> {
-        return this.service.getAllTicks();
+    public getAllTicks(count:number): Observable<Tick[]> {
+        return this.service.getAllTicks(count);
     }
 
     ngOnInit() {
-        this.getAllTicks().subscribe(l => {
+        this.getAllTicks(this._tickCount).subscribe(l => {
             console.log('component next...');
             this.Ticks = l;
         }, e => {

@@ -11,15 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var myticker_krakenservice_1 = require('../service/myticker.krakenservice');
 var MYTickerComponent = (function () {
-    function MYTickerComponent(service) {
+    function MYTickerComponent(service, tickCount) {
         this.service = service;
+        this._tickCount = tickCount;
     }
-    MYTickerComponent.prototype.getAllTicks = function () {
-        return this.service.getAllTicks();
+    MYTickerComponent.prototype.getAllTicks = function (count) {
+        return this.service.getAllTicks(count);
     };
     MYTickerComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.getAllTicks().subscribe(function (l) {
+        this.getAllTicks(this._tickCount).subscribe(function (l) {
             console.log('component next...');
             _this.Ticks = l;
         }, function (e) {
@@ -36,7 +37,7 @@ var MYTickerComponent = (function () {
             styleUrls: ['public/stylesheets/styling.css'],
             providers: [myticker_krakenservice_1.MytickerService]
         }), 
-        __metadata('design:paramtypes', [myticker_krakenservice_1.MytickerService])
+        __metadata('design:paramtypes', [myticker_krakenservice_1.MytickerService, Number])
     ], MYTickerComponent);
     return MYTickerComponent;
 }());
