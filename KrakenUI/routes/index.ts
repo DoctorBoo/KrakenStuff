@@ -37,7 +37,7 @@ export function bb(req: express.Request, res: express.Response) {
             console.log('view next...');
             list = l;
             res.render('bb', {
-                title: 'Express', year: new Date().getFullYear(), ticks: list, bbParams: {
+                title: 'Express', year: new Date().getFullYear(), ticks: list, coin: req.query.coin, bbParams: {
                     n: req.query.n,
                     k: req.query.k
                 }

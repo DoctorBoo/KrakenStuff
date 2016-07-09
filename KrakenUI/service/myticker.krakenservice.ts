@@ -71,7 +71,7 @@ export class MytickerService {
                                                 daoPairList[daoListLen - 1].pair["c"][1] == atick.pair['c'][1]);
 
                                         tick.bbDataEth = atick.name === 'XETHZEUR' && !existsEth ? [atick.creation, atick.pair['c'][0]] : null;
-                                        tick.bbDataDAO = atick.name === 'XDAOZEUR'   ? [atick.creation, atick.pair['c'][0]] : null;
+                                        tick.bbDataDAO = atick.name === 'XDAOZEUR' && !existsDao ? [atick.creation, atick.pair['c'][0]] : null;
 
                                         if (atick.name === 'XETHZEUR') ethPairList.push(tick);//collect all
                                         if (atick.name === 'XDAOZEUR') daoPairList.push(tick);//collect all
