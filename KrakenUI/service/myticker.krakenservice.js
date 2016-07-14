@@ -40,6 +40,7 @@ var MytickerService = (function () {
                     MongoClient.connect('mongodb://localhost:27017/test', function (err, db) {
                         var ethPairList = [];
                         var daoPairList = [];
+                        var btcPairList = [];
                         busy = true;
                         if (err)
                             throw err;
@@ -63,6 +64,7 @@ var MytickerService = (function () {
                                     var localDate = result.Creation.toLocaleString('nl-NL', options);
                                     var ethListLen = ethPairList.length;
                                     var daoListLen = daoPairList.length;
+                                    var btcListLen = btcPairList.length;
                                     tick.creationAsString = localDate;
                                     var existsEth = ethPairList.length > 0 &&
                                         (ethPairList && ethPairList[ethListLen - 1] && ethPairList[ethListLen - 1].creation !== atick.creation &&
@@ -72,12 +74,19 @@ var MytickerService = (function () {
                                         (daoPairList && daoPairList[daoListLen - 1] && daoPairList[daoListLen - 1].creation !== atick.creation &&
                                             daoPairList[daoListLen - 1].pair["c"][0] == atick.pair['c'][0] &&
                                             daoPairList[daoListLen - 1].pair["c"][1] == atick.pair['c'][1]);
+                                    var existsBtc = btcPairList.length > 0 &&
+                                        (btcPairList && btcPairList[btcListLen - 1] && btcPairList[btcListLen - 1].creation !== atick.creation &&
+                                            btcPairList[btcListLen - 1].pair["c"][0] == atick.pair['c'][0] &&
+                                            btcPairList[btcListLen - 1].pair["c"][1] == atick.pair['c'][1]);
                                     tick.bbDataEth = atick.name === 'XETHZEUR' && !existsEth ? [atick.creation, atick.pair['c'][0]] : null;
                                     tick.bbDataDAO = atick.name === 'XDAOZEUR' && !existsDao ? [atick.creation, atick.pair['c'][0]] : null;
+                                    tick.bbDataBtc = atick.name === 'XETHXXBT' && !existsBtc ? [atick.creation, atick.pair['c'][0]] : null;
                                     if (atick.name === 'XETHZEUR')
                                         ethPairList.push(tick); //collect all
                                     if (atick.name === 'XDAOZEUR')
                                         daoPairList.push(tick); //collect all
+                                    if (atick.name === 'XETHXXBT')
+                                        btcPairList.push(tick); //collect all
                                     collection.push(tick);
                                 }
                                 db.close();
