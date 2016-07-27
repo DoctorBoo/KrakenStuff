@@ -5,10 +5,11 @@ block content
 	script(src='http://d3js.org/d3.v3.js')
 	script(src='/javascripts/bb.js')
 	- var _ticks = ticks;
-	- var ethTicks = [], daoTicks = [];
+	- var ethTicks = [], daoTicks = [], xlmTicks = [];;
 	- var headers = ["name", "pair", "creation"] ;
 	- var etheur = [];
 	- var daoeur = [];
+	- var xlmBtc = [];
 	- _ticks.forEach(function(t) {
 	-	if(t.bbDataEth){
 	-		etheur.push(t.bbDataEth);
@@ -18,8 +19,12 @@ block content
 	-		daoeur.push(t.bbDataDAO);
 	-		daoTicks.unshift(t);
 	-	}
+	-	if(t.bbDataXlm){
+	-		xlmBtc.push(t.bbDataXlm);
+	-		xlmTicks.push(t);
+	-	}
 	- })
-	div#bb(data-bb=etheur)
+	div#bb(data-bb=xlmBtc)
 	div
 		table.table.table-hover.table-bordered
 			thead
@@ -29,7 +34,7 @@ block content
 					span= header
 			tbody
 			if _ticks.length
-				each tick in ethTicks
+				each tick in xlmTicks
 					tr
 					td
 						span= tick.name

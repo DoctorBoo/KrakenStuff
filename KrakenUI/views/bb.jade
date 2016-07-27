@@ -7,13 +7,18 @@ block content
 	- var _ticks = ticks;
 	- var _coin = coin;
 	- var _bbParams = bbParams;
-	- var ethTicks = [], daoTicks = [], btcTicks = [];
-	- var headers = ["name!", "pair", "creation"] ;
+	- var ethTicks = [], daoTicks = [], btcTicks = [], xlmTicks = [],  etcTicks = [];
+	- var headers = ["name", "pair", "creation"] ;
 	- var etheur = [];
 	- var daoeur = [];
 	- var ethBtc = [];
-	- var isEth = !(_coin && (_coin.toLowerCase()!=='dao' || _coin.toLowerCase()!=='btc'));
+	- var xlmBtc = [];
+	- var etcEur = [];
+	- var isEth = !(_coin && (_coin.toLowerCase()!=='dao' || _coin.toLowerCase()!=='btc' || _coin.toLowerCase()!=='xlm' || _coin.toLowerCase()!=='etc'));
 	- var isBtc = !isEth && (_coin && _coin.toLowerCase()==='btc');
+	- var isDao = !isEth && (_coin && _coin.toLowerCase()==='dao');
+	- var isXlm = !isEth && (_coin && _coin.toLowerCase()==='xlm');
+	- var isEtc = !isEth && (_coin && _coin.toLowerCase()==='etc');
 	- _ticks.forEach(function(t) {
 	-	if(t.bbDataEth){
 	-		etheur.push(t.bbDataEth);
@@ -27,9 +32,17 @@ block content
 	-		ethBtc.push(t.bbDataBtc);
 	-		btcTicks.push(t);
 	-	}
+	-	if(t.bbDataXlm){
+	-		xlmBtc.push(t.bbDataXlm);
+	-		xlmTicks.push(t);
+	-	}
+	-	if(t.bbDataEtc){
+	-		etcEur.push(t.bbDataEtc);
+	-		etcTicks.push(t);
+	-	}
 	- })
-	- var bbData = isEth && !isBtc ? etheur : !isBtc? daoeur : ethBtc;
-	- var coinTicks= isEth && !isBtc ? [ethTicks.pop()] : !isBtc? [daoTicks.pop()] : [btcTicks.pop()];
+	- var bbData = isEth ? etheur : isBtc? ethBtc : isDao?  daoeur : isXlm? xlmBtc : etcEur;
+	- var coinTicks= isEth ? [ethTicks.pop()] : isBtc? [btcTicks.pop()] : isDao? [daoTicks.pop()] : isXlm? [xlmTicks.pop()] : [etcTicks.pop()];
 		table.table.table-hover.table-bordered
 			thead
 			tr

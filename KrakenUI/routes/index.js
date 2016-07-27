@@ -6,7 +6,7 @@ function index(req, res) {
     var service = new myticker_krakenservice_1.MytickerService();
     var component = new myTicker_component_1.MYTickerComponent(service);
     var list;
-    var subscription = component.getAllTicks(20000).subscribe(function (l) {
+    var subscription = component.getAllTicks(2000).subscribe(function (l) {
         console.log('view next...');
         list = l;
         res.render('ticker', { title: 'Express', year: new Date().getFullYear(), ticks: list });

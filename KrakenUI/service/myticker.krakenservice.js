@@ -33,6 +33,11 @@ var MytickerService = (function () {
         var finished = false;
         var busy = false;
         var collection = [];
+        var pair1 = 'XETHZEUR';
+        var pair2 = 'XDAOZEUR';
+        var pair3 = 'XETHXXBT';
+        var pair4 = 'XXLMXXBT';
+        var pair5 = 'XETCZEUR';
         console.log('polling...');
         var fn_ticker = function (observer, bsy) {
             if (!bsy) {
@@ -41,12 +46,14 @@ var MytickerService = (function () {
                         var ethPairList = [];
                         var daoPairList = [];
                         var btcPairList = [];
+                        var xlmPairList = [];
+                        var etcPairList = [];
                         busy = true;
                         if (err)
                             throw err;
                         var max = 10;
                         var anyList;
-                        tickCount = tickCount ? tickCount : 20000;
+                        tickCount = tickCount ? tickCount : 2000;
                         db.collection('kraken').count(function (q, c) {
                             var any = db.collection('kraken').find({}, { "pair.c": 1, Creation: 1, name: 1 })
                                 .skip(c - tickCount).toArray(function (err, docs) {
@@ -65,6 +72,8 @@ var MytickerService = (function () {
                                     var ethListLen = ethPairList.length;
                                     var daoListLen = daoPairList.length;
                                     var btcListLen = btcPairList.length;
+                                    var xlmListLen = xlmPairList.length;
+                                    var etcListLen = etcPairList.length;
                                     tick.creationAsString = localDate;
                                     var existsEth = ethPairList.length > 0 &&
                                         (ethPairList && ethPairList[ethListLen - 1] && ethPairList[ethListLen - 1].creation !== atick.creation &&
@@ -78,15 +87,29 @@ var MytickerService = (function () {
                                         (btcPairList && btcPairList[btcListLen - 1] && btcPairList[btcListLen - 1].creation !== atick.creation &&
                                             btcPairList[btcListLen - 1].pair["c"][0] == atick.pair['c'][0] &&
                                             btcPairList[btcListLen - 1].pair["c"][1] == atick.pair['c'][1]);
-                                    tick.bbDataEth = atick.name === 'XETHZEUR' && !existsEth ? [atick.creation, atick.pair['c'][0]] : null;
-                                    tick.bbDataDAO = atick.name === 'XDAOZEUR' && !existsDao ? [atick.creation, atick.pair['c'][0]] : null;
-                                    tick.bbDataBtc = atick.name === 'XETHXXBT' && !existsBtc ? [atick.creation, atick.pair['c'][0]] : null;
-                                    if (atick.name === 'XETHZEUR')
+                                    var existsXlm = xlmPairList.length > 0 &&
+                                        (xlmPairList && xlmPairList[xlmListLen - 1] && xlmPairList[xlmListLen - 1].creation !== atick.creation &&
+                                            xlmPairList[xlmListLen - 1].pair["c"][0] == atick.pair['c'][0] &&
+                                            xlmPairList[xlmListLen - 1].pair["c"][1] == atick.pair['c'][1]);
+                                    var existsEtc = etcPairList.length > 0 &&
+                                        (etcPairList && etcPairList[etcListLen - 1] && etcPairList[etcListLen - 1].creation !== atick.creation &&
+                                            etcPairList[etcListLen - 1].pair["c"][0] == atick.pair['c'][0] &&
+                                            etcPairList[etcListLen - 1].pair["c"][1] == atick.pair['c'][1]);
+                                    tick.bbDataEth = atick.name === pair1 && !existsEth ? [atick.creation, atick.pair['c'][0]] : null;
+                                    tick.bbDataDAO = atick.name === pair2 && !existsDao ? [atick.creation, atick.pair['c'][0]] : null;
+                                    tick.bbDataBtc = atick.name === pair3 && !existsBtc ? [atick.creation, atick.pair['c'][0]] : null;
+                                    tick.bbDataXlm = atick.name === pair4 && !existsXlm ? [atick.creation, atick.pair['c'][0]] : null;
+                                    tick.bbDataEtc = atick.name === pair5 && !existsEtc ? [atick.creation, atick.pair['c'][0]] : null;
+                                    if (atick.name === pair1)
                                         ethPairList.push(tick); //collect all
-                                    if (atick.name === 'XDAOZEUR')
+                                    if (atick.name === pair2)
                                         daoPairList.push(tick); //collect all
-                                    if (atick.name === 'XETHXXBT')
+                                    if (atick.name === pair3)
                                         btcPairList.push(tick); //collect all
+                                    if (atick.name === pair4)
+                                        xlmPairList.push(tick); //collect all
+                                    if (atick.name === pair5)
+                                        etcPairList.push(tick); //collect all
                                     collection.push(tick);
                                 }
                                 db.close();

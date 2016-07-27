@@ -13,7 +13,7 @@ export function index(req: express.Request, res: express.Response) {
     let component: MYTickerComponent = new MYTickerComponent(service);
     let list: Tick[];
 
-    var subscription = component.getAllTicks(20000).subscribe(l => {
+    var subscription = component.getAllTicks(2000).subscribe(l => {
         console.log('view next...');
         list = l;
         res.render('ticker', { title: 'Express', year: new Date().getFullYear(), ticks: list });
