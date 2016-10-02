@@ -8,8 +8,11 @@ html
     link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/bb.css')
     script(src='/javascripts/modernizr-2.6.2.js')
+    script(src='/javascripts/gtm_head.js')
 
   body
+    noscript
+      iframe(src="https://www.googletagmanager.com/ns.html?id=GTM-NQWDT4",height="0", width="0" ,style="display:none;visibility:hidden")
     .navbar.navbar-inverse.navbar-fixed-top
       .container
         .navbar-header
@@ -28,7 +31,8 @@ html
       block content
       hr
       footer
-        p &copy; #{year} - CryptoAdvisor
+        p
+         a(href='https://crypteum.io/?utm_source=crypto-advisor&utm_medium=service&utm_term=blockchain&utm_campaign=crypto-investments', target="_blank", rel="nofollow")  &copy; #{year} - Crypteum
 
     script(src='/javascripts/jquery-1.10.2.js')
     script(src='/javascripts/bootstrap.js')

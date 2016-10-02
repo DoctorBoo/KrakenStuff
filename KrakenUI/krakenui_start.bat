@@ -3,3 +3,5 @@ d:
 
 node app.js
 
+pause
+
