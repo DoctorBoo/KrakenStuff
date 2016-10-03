@@ -43,7 +43,7 @@ block content
 	- })
 	- var bbData = isEth ? etheur : isBtc? ethBtc : isDao?  daoeur : isXlm? xlmBtc : etcEur;
 	- var coinTicks= isEth ? [ethTicks.pop()] : isBtc? [btcTicks.pop()] : isDao? [daoTicks.pop()] : isXlm? [xlmTicks.pop()] : [etcTicks.pop()];
-	form
+	form(id="OrderForm")
 		table.table.table-hover.table-bordered
 			thead
 			tr
