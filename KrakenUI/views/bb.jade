@@ -43,6 +43,7 @@ block content
 	- })
 	- var bbData = isEth ? etheur : isBtc? ethBtc : isDao?  daoeur : isXlm? xlmBtc : etcEur;
 	- var coinTicks= isEth ? [ethTicks.pop()] : isBtc? [btcTicks.pop()] : isDao? [daoTicks.pop()] : isXlm? [xlmTicks.pop()] : [etcTicks.pop()];
+	form
 		table.table.table-hover.table-bordered
 			thead
 			tr
@@ -54,12 +55,19 @@ block content
 				each tick in coinTicks
 					tr
 					td
-						span= tick.name
+						span(id="tick.name")= tick.name
 					td
-						span= tick.pair.c	
+						span(id="tick.pair.c")= tick.pair.c
 					td
-						span= tick.creationAsString
-
+						span(id="tick.creationAsString")= tick.creationAsString
+				tr
+				td
+				td
+					div(class="input-group")
+						span(class="input-group-btn")
+							a(href='https://crypteum.io/?utm_source=crypto-advisor&utm_medium=service&utm_term=blockchain&utm_campaign=crypto-investments', class="btn btn-default", target="_blank", rel="nofollow") Order crypto now
+						input(id="order" type="text", class="form-control", placeholder="place your pair")
+				td
 	div#bb(data-bb= bbData)
 	div#bbParams(data-bbParams=bbParams)
 
